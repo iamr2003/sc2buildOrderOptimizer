@@ -1,0 +1,26 @@
+General: optimize sc2 builds to meet a specific objective
+
+Kinds of objectives
+- max of a certain unit
+- max supply(maybe unit health or somethin)
+
+Constraints
+- certain amount of unit/structure at a certain time
+- certain supply at a time
+- uses a prechosen build at the front(to encode openers)
+- can easily be stacked on top of each other
+
+Output formats
+- supply, and time for each decision
+
+How to Optimize:
+- branch and bound(oldest method)
+- genetic algo(done before)
+ - fitness is not too hard
+ - genes are kind of hard
+- there probably are ways to optimize penalizing over simplicity
+
+
+Formats:
+- easy way to change unit types/stats(probably text files)
+- outputs readable in a variety of formats
