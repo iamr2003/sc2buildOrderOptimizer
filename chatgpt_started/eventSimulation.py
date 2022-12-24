@@ -1,26 +1,29 @@
 # CHATGPT generated, edited and worked on by Ibrahim
 
-# needs a lot more work to be done 
+# needs a lot more work to be done
 import heapq
 import functools
 
-#action class will map things f
+# action class will map things f
 
 # Define a class for each event that will be added to the queue
+
+
 class Event:
     def __init__(self, time, name, action):
         self.time = time
         self.action = action
         self.name = name
-    
+
     def __lt__(self, other):
         # Define comparison function for events based on time
         return self.time < other.time
 
 # assume simple minerals atm, eventually split by bases and gas sat or something
+
+
 def miningRate(numWorkers):
     return numWorkers*1
-
 
 
 # Define the current state of the game
@@ -30,13 +33,13 @@ state = {
     "gas": 0,
     "supply": 10,
     "supply_used": 0,
-    "structures": {"Nexus":1},
-    "units": {"Probe":12},
-    "inProgress":[]
+    "structures": {"Nexus": 1},
+    "units": {"Probe": 12},
+    "inProgress": []
 }
 
 # Define the list of available units and structures
-units = { 
+units = {
     "Probe": {"minerals": 50, "gas": 0, "supply": 1, "build_time": 12},
     "Zealot": {"minerals": 100, "gas": 0, "supply": 2, "build_time": 30},
     "Stalker": {"minerals": 125, "gas": 50, "supply": 2, "build_time": 35},
@@ -46,7 +49,7 @@ units = {
     "Immortal": {"minerals": 275, "gas": 100, "supply": 4, "build_time": 60}
 }
 
-structures ={ 
+structures = {
     "Pylon": {"minerals": 100, "gas": 0, "build_time": 18},
     "Gateway": {"minerals": 150, "gas": 0, "build_time": 65},
     "Robotics Facility": {"minerals": 200, "gas": 100, "build_time": 65},
@@ -58,31 +61,38 @@ structures ={
 
 # each event will be a function state -> state, neweEvents
 
-def addUnit(state,unitName):
+
+def addUnit(state, unitName):
     state["units"][unitName] += 1
     return (state, [])
 
-def addStructure(state,structureName):
+
+def addStructure(state, structureName):
     state["structures"][structureName] += 1
     return (state, [])
 
-def buildUnit(state,unitName):
+
+def buildUnit(state, unitName):
     minCost = units[unitName]["minerals"]
     gasCost = units[unitName]["gas"]
     supply = units[unitName]["supply"]
     state["minerals"] -= minCost
     state["gas"] -= gasCost
     state["supply_used"] += supply
-    addEvent = Event(state["time"] + units[unitName]["build_time"], unitName+" finished", lambda state: addUnit(state,unitName))
-    return (state,[addEvent])
+    addEvent = Event(state["time"] + units[unitName]["build_time"],
+                     unitName+" finished", lambda state: addUnit(state, unitName))
+    return (state, [addEvent])
 
-def buildStructure(state,structureName):
+
+def buildStructure(state, structureName):
     minCost = structures[structureName]["minerals"]
     gasCost = structures[structureName]["gas"]
     state["minerals"] -= minCost
     state["gas"] -= gasCost
-    addEvent = Event(state["time"] + structures[structureName]["build_time"], structureName+" finished", lambda state: addStructure(state,structureName))
-    return (state,[addEvent])
+    addEvent = Event(state["time"] + structures[structureName]["build_time"],
+                     structureName+" finished", lambda state: addStructure(state, structureName))
+    return (state, [addEvent])
+
 
 def printState(state):
     print(f"Time: {state['time']}")
@@ -93,49 +103,65 @@ def printState(state):
     print(f"Units: {state['units']}")
 
 
+# strategies
+def buildProbes(state):
+    # need to figure out where to encode constraints
+    if state["supply_used"] >= state["supply"]:
+        return (state, [])
 
-#finished the physical event framework, still haven't added decision making framework
+    if state["minerals"] >= 50:
+        return (state, [
+            Event(state["time"], "Build Probe", lambda state: buildUnit(state, "Probe")),
+            Event(state["time"] + 12, "Build Probe", buildProbes)
+            ])
+    else:
+        # project need to check again(complicated with changing worker counts)
+        timeTillNextProbe = (
+            50 - state["minerals"])/miningRate(state["units"]["Probe"])
+        return (state, [Event(state["time"] + timeTillNextProbe, "Build Probes", buildProbes)])
+
+
+# finished the physical event framework, still haven't added decision making framework
 
 # Initialize the priority queue with the initial event
 event_queue = []
-# heapq.heappush(event_queue, Event(0, "Start game", lambda state:buildUnit(state,"Probe")))
+heapq.heappush(event_queue, Event(0, "Start game", buildProbes))
 
 
 # Loop until the queue is empty
 while event_queue:
     # Get the next event from the queue
     current_event = heapq.heappop(event_queue)
-    
+
     # Update the state based on the time passed since the last event
     diff = current_event.time - state["time"]
     state["time"] += diff
 
     state["minerals"] += diff * miningRate(state["units"]["Probe"])
-    
+
     # TO DO - adding new events upon completion
 
     printState(state)
     print(f"Event {current_event.name} at time {state['time']}")
     print("\n")
 
-
-    state,newEvents = current_event.action(state)
+    state, newEvents = current_event.action(state)
     for event in newEvents:
         heapq.heappush(event_queue, event)
 
-    #special cases
+    # special cases
     if current_event.name == "Pylon finished":
         state["supply"] += 8
-    
 
-    #decision making
-
-
-
+    # decision making
+    # ignoring activity requirements so far
+    # if state["minerals"] >= 50:
+    #     heapq.heappush(event_queue, Event(state["time"], "Probe build", lambda state:buildUnit(state,"Probe")))
+    #     state["inProgress"].append("Probe build")
 
     # Perform the action for the current event
     # if current_event.action == "Start game":
-    #      print(f"Game start at time {state['time']}")   
+    #      print(f"Game start at time {state['time']}")
 
     # elif current_event.action == "Build structure":
     #     # Choose the next available structure to build
@@ -182,5 +208,3 @@ while event_queue:
     #     print(f"Unit finished at time {state['time']}")
     #     # Add more events to the queue based on the criteria you provided
     #     heapq.heappush(event_queue, Event(state["time"], "Build unit"))
-
-
