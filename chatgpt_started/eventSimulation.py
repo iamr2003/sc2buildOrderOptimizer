@@ -2,12 +2,15 @@
 
 # needs a lot more work to be done
 import heapq
-import functools
+from dataclasses import dataclass
 
 # action class will map things f
 
 # Define a class for each event that will be added to the queue
 
+
+# edge cases
+# workers being consumed in structure making
 
 class Event:
     def __init__(self, time, name, action):
@@ -25,17 +28,20 @@ class Event:
 def miningRate(numWorkers):
     return numWorkers*1
 
+@dataclass
+class Struct:
+    count: int = 0
+    active: int = 0
 
 # Define the current state of the game
 state = {
     "time": 0,
     "minerals": 50,
     "gas": 0,
-    "supply": 10,
-    "supply_used": 0,
-    "structures": {"Nexus": 1},
+    "supply": 14,
+    "supply_used": 12,
+    "structures": {"Nexus": Struct(1)},
     "units": {"Probe": 12},
-    "inProgress": []
 }
 
 # Define the list of available units and structures
@@ -47,6 +53,17 @@ units = {
     "Observer": {"minerals": 25, "gas": 75, "supply": 1, "build_time": 30},
     "Colossus": {"minerals": 300, "gas": 200, "supply": 6, "build_time": 90},
     "Immortal": {"minerals": 275, "gas": 100, "supply": 4, "build_time": 60}
+}
+
+# build production tree
+buildProduction = {
+    "Probe": "Nexus",
+    "Zealot": "Gateway",
+    "Stalker": "Gateway",
+    "Sentry": "Gateway",
+    "Observer": "Robotics Facility",
+    "Colossus": "Robotics Facility",
+    "Immortal": "Robotics Facility"
 }
 
 structures = {
@@ -61,9 +78,11 @@ structures = {
 
 # each event will be a function state -> state, neweEvents
 
+# gah the progress stuff kinda stucks, and where to put safeties is annoying
 
 def addUnit(state, unitName):
     state["units"][unitName] += 1
+    state["structures"][buildProduction[unitName]].active -= 1
     return (state, [])
 
 
@@ -79,6 +98,7 @@ def buildUnit(state, unitName):
     state["minerals"] -= minCost
     state["gas"] -= gasCost
     state["supply_used"] += supply
+    state["structures"][buildProduction[unitName]].active += 1
     addEvent = Event(state["time"] + units[unitName]["build_time"],
                      unitName+" finished", lambda state: addUnit(state, unitName))
     return (state, [addEvent])
@@ -106,22 +126,25 @@ def printState(state):
 # strategies
 def buildProbes(state):
     # need to figure out where to encode constraints
+    # encode activity constraints
+
     if state["supply_used"] >= state["supply"]:
         return (state, [])
 
     if state["minerals"] >= 50:
         return (state, [
-            Event(state["time"], "Build Probe", lambda state: buildUnit(state, "Probe")),
+            Event(state["time"], "Build Probe",
+                  lambda state: buildUnit(state, "Probe")),
             Event(state["time"] + 12, "Build Probe", buildProbes)
-            ])
-    else:
-        # project need to check again(complicated with changing worker counts)
-        timeTillNextProbe = (
-            50 - state["minerals"])/miningRate(state["units"]["Probe"])
-        return (state, [Event(state["time"] + timeTillNextProbe, "Build Probes", buildProbes)])
+        ])
+    # else:
+    #     # project need to check again(complicated with changing worker counts)
+    #     # timeTillNextProbe = (
+    #     #     50 - state["minerals"])/miningRate(state["units"]["Probe"])
+    #     return (state, [Event(state["time"] + timeTillNextProbe, "Build Probes", buildProbes)])
 
-
-# finished the physical event framework, still haven't added decision making framework
+# need to figure out how to tie statuses to different things
+#best method I think is to have each structure have an "in progress aspect"
 
 # Initialize the priority queue with the initial event
 event_queue = []
