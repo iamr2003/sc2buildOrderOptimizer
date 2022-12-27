@@ -1,5 +1,4 @@
 # generated with chatgpt and edited by Ibrahim in collaboration
-# a little more
 
 cdef class PriorityQueue:
     cdef list heap  # list of (priority, key) tuples
@@ -11,7 +10,6 @@ cdef class PriorityQueue:
         self.lookup = {}
         self.key_index = {}
 
-# sift up and sift down just straight up aren't working
     cdef void _sift_up(self, int index):
         cdef int parent = (index - 1) // 2
         cdef int priority = self.heap[index][0]  # priority of current element
