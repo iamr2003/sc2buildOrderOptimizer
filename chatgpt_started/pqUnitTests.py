@@ -50,5 +50,20 @@ class TestPriorityQueue(unittest.TestCase):
         self.assertEqual(self.pq.get_priority("b"), 2)
         self.assertIsNone(self.pq.get_priority("c"))
 
+    def test_mass_insertion(self):
+        n = 1000000 #3.868s up to here on my machine, should be fast enough
+        for i in range(n):
+            self.pq.push(str(i), i, i)
+        for i in range(n):
+            self.assertEqual(self.pq.pop(), i)
+
+    def test_mass_lookup(self):
+        n = 1000000 #with all 5.418s
+        for i in range(n):
+            self.pq.push(str(i), i, i)
+        for i in range(n):
+            self.assertEqual(self.pq.get(str(i)), i)
+
 if __name__ == '__main__':
-    unittest.main()
+    suite = unittest.TestLoader().loadTestsFromTestCase(TestPriorityQueue)
+    unittest.TextTestRunner(verbosity=0).run(suite)
