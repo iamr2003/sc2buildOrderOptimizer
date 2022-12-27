@@ -11,7 +11,7 @@ cdef class PriorityQueue:
         self.lookup = {}
         self.key_index = {}
 
-# there is some issue here, chatgpt can't solve it
+# sift up and sift down just straight up aren't working
     cdef void _sift_up(self, int index):
         cdef int parent = (index - 1) // 2
         cdef int priority = self.heap[index][0]  # priority of current element
@@ -45,6 +45,7 @@ cdef class PriorityQueue:
 
         self.heap[index] = (priority, key)  # place element in correct position
         self.key_index[key] = index  # update key_index for element that was moved
+
 
     def push(self, str key, int priority, object element):
         self.heap.append((priority, key))  # add element to end of heap
