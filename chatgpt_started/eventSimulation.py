@@ -2,9 +2,8 @@
 
 # needs a lot more work to be done
 import heapq
+from indexedPQ import PriorityQueue as pq
 from dataclasses import dataclass
-
-# action class will map things f
 
 # Define a class for each event that will be added to the queue
 
@@ -23,8 +22,6 @@ class Event:
         return self.time < other.time
 
 # assume simple minerals atm, eventually split by bases and gas sat or something
-
-
 def miningRate(numWorkers):
     return numWorkers*1
 
@@ -135,7 +132,7 @@ def buildProbes(state):
         return (state, [
             Event(state["time"], "Build Probe",
                   lambda state: buildUnit(state, "Probe")),
-            Event(state["time"] + 12, "Build Probe", buildProbes)
+            Event(state["time"] + 12, "Build Probe Decision", buildProbes)
         ])
     # else:
     #     # project need to check again(complicated with changing worker counts)
@@ -147,14 +144,17 @@ def buildProbes(state):
 #best method I think is to have each structure have an "in progress aspect"
 
 # Initialize the priority queue with the initial event
-event_queue = []
-heapq.heappush(event_queue, Event(0, "Start game", buildProbes))
+event_queue = pq()
+event_queue.push("Start",0,Event(0, "Start game", buildProbes)) #might simplify a bit, no need to store index in event as well
+
+# will need to create an "potentially affected group for decisions"
+# might be nice for the ability to have things unindexed in DS, maybe a special tag
 
 
 # Loop until the queue is empty
-while event_queue:
+while not event_queue.is_empty():
     # Get the next event from the queue
-    current_event = heapq.heappop(event_queue)
+    current_event = event_queue.pop()
 
     # Update the state based on the time passed since the last event
     diff = current_event.time - state["time"]
@@ -169,8 +169,16 @@ while event_queue:
     print("\n")
 
     state, newEvents = current_event.action(state)
+
+    i = 0
     for event in newEvents:
-        heapq.heappush(event_queue, event)
+        print(f"pushed time {event.time} event {event.name}")
+
+        # make sure fully uniqname, and some descriptions
+        uniqname = f"Made:t{current_event.time},{event.name},For:t{event.time}i:{i}"
+        event_queue.push(uniqname, event.time, event)
+        i += 1
+
 
     # special cases
     if current_event.name == "Pylon finished":

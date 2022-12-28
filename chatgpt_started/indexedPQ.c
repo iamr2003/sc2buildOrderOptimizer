@@ -970,8 +970,8 @@ static const char *__pyx_f[] = {
 struct __pyx_obj_9indexedPQ_PriorityQueue;
 
 /* "indexedPQ.pyx":4
- * # a little more
  * 
+ * # feature request - ability for things to be unindexed, perhaps an input of None string or something
  * cdef class PriorityQueue:             # <<<<<<<<<<<<<<
  *     cdef list heap  # list of (priority, key) tuples
  *     cdef dict lookup  # mapping from key to element
@@ -1560,8 +1560,9 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_8get(struct __pyx_obj_9inde
 static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self, PyObject *__pyx_v_key, int __pyx_v_priority); /* proto */
 static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_12remove(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self, PyObject *__pyx_v_key); /* proto */
 static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self, PyObject *__pyx_v_key); /* proto */
-static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_16__reduce_cython__(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_18__setstate_cython__(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_16is_empty(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_18__reduce_cython__(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_20__setstate_cython__(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_9indexedPQ___pyx_unpickle_PriorityQueue(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_9indexedPQ_PriorityQueue(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static __Pyx_CachedCFunction __pyx_umethod_PyList_Type_pop = {0, &__pyx_n_s_pop, 0, 0, 0};
@@ -1642,7 +1643,7 @@ static int __pyx_pf_9indexedPQ_13PriorityQueue___init__(struct __pyx_obj_9indexe
  *         self.lookup = {}
  *         self.key_index = {}             # <<<<<<<<<<<<<<
  * 
- * # sift up and sift down just straight up aren't working
+ *     cdef void _sift_up(self, int index):
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -1672,9 +1673,9 @@ static int __pyx_pf_9indexedPQ_13PriorityQueue___init__(struct __pyx_obj_9indexe
   return __pyx_r;
 }
 
-/* "indexedPQ.pyx":15
+/* "indexedPQ.pyx":14
+ *         self.key_index = {}
  * 
- * # sift up and sift down just straight up aren't working
  *     cdef void _sift_up(self, int index):             # <<<<<<<<<<<<<<
  *         cdef int parent = (index - 1) // 2
  *         cdef int priority = self.heap[index][0]  # priority of current element
@@ -1696,8 +1697,8 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_sift_up", 0);
 
-  /* "indexedPQ.pyx":16
- * # sift up and sift down just straight up aren't working
+  /* "indexedPQ.pyx":15
+ * 
  *     cdef void _sift_up(self, int index):
  *         cdef int parent = (index - 1) // 2             # <<<<<<<<<<<<<<
  *         cdef int priority = self.heap[index][0]  # priority of current element
@@ -1705,7 +1706,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
  */
   __pyx_v_parent = __Pyx_div_long((__pyx_v_index - 1), 2);
 
-  /* "indexedPQ.pyx":17
+  /* "indexedPQ.pyx":16
  *     cdef void _sift_up(self, int index):
  *         cdef int parent = (index - 1) // 2
  *         cdef int priority = self.heap[index][0]  # priority of current element             # <<<<<<<<<<<<<<
@@ -1714,18 +1715,18 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
  */
   if (unlikely(__pyx_v_self->heap == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 17, __pyx_L1_error)
+    __PYX_ERR(0, 16, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 16, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_priority = __pyx_t_3;
 
-  /* "indexedPQ.pyx":18
+  /* "indexedPQ.pyx":17
  *         cdef int parent = (index - 1) // 2
  *         cdef int priority = self.heap[index][0]  # priority of current element
  *         cdef str key = self.heap[index][1]  # key of current element             # <<<<<<<<<<<<<<
@@ -1734,18 +1735,18 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
  */
   if (unlikely(__pyx_v_self->heap == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 18, __pyx_L1_error)
+    __PYX_ERR(0, 17, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 18, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 18, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 17, __pyx_L1_error)
   __pyx_v_key = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "indexedPQ.pyx":20
+  /* "indexedPQ.pyx":19
  *         cdef str key = self.heap[index][1]  # key of current element
  * 
  *         while index > 0 and self.heap[parent][0] > priority:  # while element is not root and has higher priority than parent             # <<<<<<<<<<<<<<
@@ -1761,25 +1762,25 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
     }
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 20, __pyx_L1_error)
+      __PYX_ERR(0, 19, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_parent, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_parent, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 19, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 20, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 19, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_6 = PyObject_RichCompare(__pyx_t_2, __pyx_t_1, Py_GT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 20, __pyx_L1_error)
+    __pyx_t_6 = PyObject_RichCompare(__pyx_t_2, __pyx_t_1, Py_GT); __Pyx_XGOTREF(__pyx_t_6); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 19, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 20, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_6); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 19, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
     __pyx_t_4 = __pyx_t_5;
     __pyx_L5_bool_binop_done:;
     if (!__pyx_t_4) break;
 
-    /* "indexedPQ.pyx":21
+    /* "indexedPQ.pyx":20
  * 
  *         while index > 0 and self.heap[parent][0] > priority:  # while element is not root and has higher priority than parent
  *             self.heap[index] = self.heap[parent]  # swap elements             # <<<<<<<<<<<<<<
@@ -1788,44 +1789,44 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
  */
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 21, __pyx_L1_error)
+      __PYX_ERR(0, 20, __pyx_L1_error)
     }
-    __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_parent, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 21, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_parent, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 21, __pyx_L1_error)
+      __PYX_ERR(0, 20, __pyx_L1_error)
     }
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, __pyx_v_index, __pyx_t_6, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 21, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, __pyx_v_index, __pyx_t_6, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 20, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "indexedPQ.pyx":22
+    /* "indexedPQ.pyx":21
  *         while index > 0 and self.heap[parent][0] > priority:  # while element is not root and has higher priority than parent
  *             self.heap[index] = self.heap[parent]  # swap elements
  *             self.key_index[self.heap[index][1]] = index  # update key_index for element that was swapped             # <<<<<<<<<<<<<<
  *             index = parent  # update
  *             parent = (index - 1) // 2
  */
-    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 21, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
     if (unlikely(__pyx_v_self->key_index == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 22, __pyx_L1_error)
+      __PYX_ERR(0, 21, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 22, __pyx_L1_error)
+      __PYX_ERR(0, 21, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 21, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 22, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 21, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_t_2, __pyx_t_6) < 0)) __PYX_ERR(0, 22, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_t_2, __pyx_t_6) < 0)) __PYX_ERR(0, 21, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
-    /* "indexedPQ.pyx":23
+    /* "indexedPQ.pyx":22
  *             self.heap[index] = self.heap[parent]  # swap elements
  *             self.key_index[self.heap[index][1]] = index  # update key_index for element that was swapped
  *             index = parent  # update             # <<<<<<<<<<<<<<
@@ -1834,7 +1835,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
  */
     __pyx_v_index = __pyx_v_parent;
 
-    /* "indexedPQ.pyx":24
+    /* "indexedPQ.pyx":23
  *             self.key_index[self.heap[index][1]] = index  # update key_index for element that was swapped
  *             index = parent  # update
  *             parent = (index - 1) // 2             # <<<<<<<<<<<<<<
@@ -1843,16 +1844,16 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
  */
     __pyx_v_parent = __Pyx_div_long((__pyx_v_index - 1), 2);
 
-    /* "indexedPQ.pyx":25
+    /* "indexedPQ.pyx":24
  *             index = parent  # update
  *             parent = (index - 1) // 2
  *             self.heap[index] = (priority, key)  # place element in correct position             # <<<<<<<<<<<<<<
  *             self.key_index[key] = index  # update key_index for element that was moved
  * 
  */
-    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 25, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_6);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_6);
@@ -1862,31 +1863,31 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
     __pyx_t_6 = 0;
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 25, __pyx_L1_error)
+      __PYX_ERR(0, 24, __pyx_L1_error)
     }
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, __pyx_v_index, __pyx_t_2, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 25, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, __pyx_v_index, __pyx_t_2, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 24, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "indexedPQ.pyx":26
+    /* "indexedPQ.pyx":25
  *             parent = (index - 1) // 2
  *             self.heap[index] = (priority, key)  # place element in correct position
  *             self.key_index[key] = index  # update key_index for element that was moved             # <<<<<<<<<<<<<<
  * 
  *     cdef void _sift_down(self, int index):
  */
-    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 25, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     if (unlikely(__pyx_v_self->key_index == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 26, __pyx_L1_error)
+      __PYX_ERR(0, 25, __pyx_L1_error)
     }
-    if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_v_key, __pyx_t_2) < 0)) __PYX_ERR(0, 26, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_v_key, __pyx_t_2) < 0)) __PYX_ERR(0, 25, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   }
 
-  /* "indexedPQ.pyx":15
+  /* "indexedPQ.pyx":14
+ *         self.key_index = {}
  * 
- * # sift up and sift down just straight up aren't working
  *     cdef void _sift_up(self, int index):             # <<<<<<<<<<<<<<
  *         cdef int parent = (index - 1) // 2
  *         cdef int priority = self.heap[index][0]  # priority of current element
@@ -1904,7 +1905,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_up(struct __pyx_obj_9indexe
   __Pyx_RefNannyFinishContext();
 }
 
-/* "indexedPQ.pyx":28
+/* "indexedPQ.pyx":27
  *             self.key_index[key] = index  # update key_index for element that was moved
  * 
  *     cdef void _sift_down(self, int index):             # <<<<<<<<<<<<<<
@@ -1930,7 +1931,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("_sift_down", 0);
 
-  /* "indexedPQ.pyx":29
+  /* "indexedPQ.pyx":28
  * 
  *     cdef void _sift_down(self, int index):
  *         cdef int child = 2 * index + 1             # <<<<<<<<<<<<<<
@@ -1939,7 +1940,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
  */
   __pyx_v_child = ((2 * __pyx_v_index) + 1);
 
-  /* "indexedPQ.pyx":30
+  /* "indexedPQ.pyx":29
  *     cdef void _sift_down(self, int index):
  *         cdef int child = 2 * index + 1
  *         cdef int priority = self.heap[index][0]  # priority of current element             # <<<<<<<<<<<<<<
@@ -1948,18 +1949,18 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
  */
   if (unlikely(__pyx_v_self->heap == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 30, __pyx_L1_error)
+    __PYX_ERR(0, 29, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 30, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyInt_As_int(__pyx_t_2); if (unlikely((__pyx_t_3 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_priority = __pyx_t_3;
 
-  /* "indexedPQ.pyx":31
+  /* "indexedPQ.pyx":30
  *         cdef int child = 2 * index + 1
  *         cdef int priority = self.heap[index][0]  # priority of current element
  *         cdef str key = self.heap[index][1]  # key of current element             # <<<<<<<<<<<<<<
@@ -1968,18 +1969,18 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
  */
   if (unlikely(__pyx_v_self->heap == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 31, __pyx_L1_error)
+    __PYX_ERR(0, 30, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 30, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 31, __pyx_L1_error)
+  if (!(likely(PyUnicode_CheckExact(__pyx_t_1))||((__pyx_t_1) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "unicode", Py_TYPE(__pyx_t_1)->tp_name), 0))) __PYX_ERR(0, 30, __pyx_L1_error)
   __pyx_v_key = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "indexedPQ.pyx":33
+  /* "indexedPQ.pyx":32
  *         cdef str key = self.heap[index][1]  # key of current element
  * 
  *         while child < len(self.heap):  # while element has at least one child             # <<<<<<<<<<<<<<
@@ -1991,14 +1992,14 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
     __Pyx_INCREF(__pyx_t_1);
     if (unlikely(__pyx_t_1 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 33, __pyx_L1_error)
+      __PYX_ERR(0, 32, __pyx_L1_error)
     }
-    __pyx_t_4 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 33, __pyx_L1_error)
+    __pyx_t_4 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 32, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = ((__pyx_v_child < __pyx_t_4) != 0);
     if (!__pyx_t_5) break;
 
-    /* "indexedPQ.pyx":35
+    /* "indexedPQ.pyx":34
  *         while child < len(self.heap):  # while element has at least one child
  *             # find child with lower priority
  *             if child + 1 < len(self.heap) and self.heap[child + 1][0] < self.heap[child][0]:             # <<<<<<<<<<<<<<
@@ -2009,9 +2010,9 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
     __Pyx_INCREF(__pyx_t_1);
     if (unlikely(__pyx_t_1 == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-      __PYX_ERR(0, 35, __pyx_L1_error)
+      __PYX_ERR(0, 34, __pyx_L1_error)
     }
-    __pyx_t_4 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_4 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 34, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_6 = (((__pyx_v_child + 1) < __pyx_t_4) != 0);
     if (__pyx_t_6) {
@@ -2021,33 +2022,33 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
     }
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 35, __pyx_L1_error)
+      __PYX_ERR(0, 34, __pyx_L1_error)
     }
     __pyx_t_7 = (__pyx_v_child + 1);
-    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_t_7, long, 1, __Pyx_PyInt_From_long, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_t_7, long, 1, __Pyx_PyInt_From_long, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 34, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 35, __pyx_L1_error)
+      __PYX_ERR(0, 34, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_child, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_child, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 34, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_t_8, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_1 = PyObject_RichCompare(__pyx_t_2, __pyx_t_8, Py_LT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 34, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 34, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_5 = __pyx_t_6;
     __pyx_L6_bool_binop_done:;
     if (__pyx_t_5) {
 
-      /* "indexedPQ.pyx":36
+      /* "indexedPQ.pyx":35
  *             # find child with lower priority
  *             if child + 1 < len(self.heap) and self.heap[child + 1][0] < self.heap[child][0]:
  *                 child += 1             # <<<<<<<<<<<<<<
@@ -2056,7 +2057,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
  */
       __pyx_v_child = (__pyx_v_child + 1);
 
-      /* "indexedPQ.pyx":35
+      /* "indexedPQ.pyx":34
  *         while child < len(self.heap):  # while element has at least one child
  *             # find child with lower priority
  *             if child + 1 < len(self.heap) and self.heap[child + 1][0] < self.heap[child][0]:             # <<<<<<<<<<<<<<
@@ -2065,32 +2066,32 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
  */
     }
 
-    /* "indexedPQ.pyx":38
+    /* "indexedPQ.pyx":37
  *                 child += 1
  * 
  *             if priority <= self.heap[child][0]:  # if current element has lower or equal priority than both children, we're done             # <<<<<<<<<<<<<<
  *                 break
  * 
  */
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 38, __pyx_L1_error)
+      __PYX_ERR(0, 37, __pyx_L1_error)
     }
-    __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_child, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 38, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_child, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 38, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_8, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-    __pyx_t_8 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_LE); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 38, __pyx_L1_error)
+    __pyx_t_8 = PyObject_RichCompare(__pyx_t_1, __pyx_t_2, Py_LE); __Pyx_XGOTREF(__pyx_t_8); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 38, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_8); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 37, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
     if (__pyx_t_5) {
 
-      /* "indexedPQ.pyx":39
+      /* "indexedPQ.pyx":38
  * 
  *             if priority <= self.heap[child][0]:  # if current element has lower or equal priority than both children, we're done
  *                 break             # <<<<<<<<<<<<<<
@@ -2099,7 +2100,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
  */
       goto __pyx_L4_break;
 
-      /* "indexedPQ.pyx":38
+      /* "indexedPQ.pyx":37
  *                 child += 1
  * 
  *             if priority <= self.heap[child][0]:  # if current element has lower or equal priority than both children, we're done             # <<<<<<<<<<<<<<
@@ -2108,7 +2109,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
  */
     }
 
-    /* "indexedPQ.pyx":41
+    /* "indexedPQ.pyx":40
  *                 break
  * 
  *             self.heap[index] = self.heap[child]  # swap elements             # <<<<<<<<<<<<<<
@@ -2117,44 +2118,44 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
  */
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 41, __pyx_L1_error)
+      __PYX_ERR(0, 40, __pyx_L1_error)
     }
-    __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_child, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 41, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_child, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 40, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 41, __pyx_L1_error)
+      __PYX_ERR(0, 40, __pyx_L1_error)
     }
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, __pyx_v_index, __pyx_t_8, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 41, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, __pyx_v_index, __pyx_t_8, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 40, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "indexedPQ.pyx":42
+    /* "indexedPQ.pyx":41
  * 
  *             self.heap[index] = self.heap[child]  # swap elements
  *             self.key_index[self.heap[index][1]] = index  # update key_index for element that was swapped             # <<<<<<<<<<<<<<
  *             index = child  # update index and child
  *             child = 2 * index + 1
  */
-    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 42, __pyx_L1_error)
+    __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 41, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
     if (unlikely(__pyx_v_self->key_index == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 42, __pyx_L1_error)
+      __PYX_ERR(0, 41, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 42, __pyx_L1_error)
+      __PYX_ERR(0, 41, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_self->heap, __pyx_v_index, int, 1, __Pyx_PyInt_From_int, 1, 1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_t_1, __pyx_t_8) < 0)) __PYX_ERR(0, 42, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_t_1, __pyx_t_8) < 0)) __PYX_ERR(0, 41, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
 
-    /* "indexedPQ.pyx":43
+    /* "indexedPQ.pyx":42
  *             self.heap[index] = self.heap[child]  # swap elements
  *             self.key_index[self.heap[index][1]] = index  # update key_index for element that was swapped
  *             index = child  # update index and child             # <<<<<<<<<<<<<<
@@ -2163,7 +2164,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
  */
     __pyx_v_index = __pyx_v_child;
 
-    /* "indexedPQ.pyx":44
+    /* "indexedPQ.pyx":43
  *             self.key_index[self.heap[index][1]] = index  # update key_index for element that was swapped
  *             index = child  # update index and child
  *             child = 2 * index + 1             # <<<<<<<<<<<<<<
@@ -2174,16 +2175,16 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
   }
   __pyx_L4_break:;
 
-  /* "indexedPQ.pyx":46
+  /* "indexedPQ.pyx":45
  *             child = 2 * index + 1
  * 
  *         self.heap[index] = (priority, key)  # place element in correct position             # <<<<<<<<<<<<<<
  *         self.key_index[key] = index  # update key_index for element that was moved
  * 
  */
-  __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_8);
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_GIVEREF(__pyx_t_8);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_8);
@@ -2193,28 +2194,28 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
   __pyx_t_8 = 0;
   if (unlikely(__pyx_v_self->heap == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 46, __pyx_L1_error)
+    __PYX_ERR(0, 45, __pyx_L1_error)
   }
-  if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, __pyx_v_index, __pyx_t_1, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 46, __pyx_L1_error)
+  if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, __pyx_v_index, __pyx_t_1, int, 1, __Pyx_PyInt_From_int, 1, 1, 1) < 0)) __PYX_ERR(0, 45, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "indexedPQ.pyx":47
+  /* "indexedPQ.pyx":46
  * 
  *         self.heap[index] = (priority, key)  # place element in correct position
  *         self.key_index[key] = index  # update key_index for element that was moved             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 47, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (unlikely(__pyx_v_self->key_index == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 47, __pyx_L1_error)
+    __PYX_ERR(0, 46, __pyx_L1_error)
   }
-  if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_v_key, __pyx_t_1) < 0)) __PYX_ERR(0, 47, __pyx_L1_error)
+  if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_v_key, __pyx_t_1) < 0)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "indexedPQ.pyx":28
+  /* "indexedPQ.pyx":27
  *             self.key_index[key] = index  # update key_index for element that was moved
  * 
  *     cdef void _sift_down(self, int index):             # <<<<<<<<<<<<<<
@@ -2234,7 +2235,7 @@ static void __pyx_f_9indexedPQ_13PriorityQueue__sift_down(struct __pyx_obj_9inde
   __Pyx_RefNannyFinishContext();
 }
 
-/* "indexedPQ.pyx":50
+/* "indexedPQ.pyx":49
  * 
  * 
  *     def push(self, str key, int priority, object element):             # <<<<<<<<<<<<<<
@@ -2279,17 +2280,17 @@ static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_3push(PyObject *__pyx_v_sel
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_priority)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("push", 1, 3, 3, 1); __PYX_ERR(0, 50, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("push", 1, 3, 3, 1); __PYX_ERR(0, 49, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_element)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("push", 1, 3, 3, 2); __PYX_ERR(0, 50, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("push", 1, 3, 3, 2); __PYX_ERR(0, 49, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "push") < 0)) __PYX_ERR(0, 50, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "push") < 0)) __PYX_ERR(0, 49, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -2299,18 +2300,18 @@ static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_3push(PyObject *__pyx_v_sel
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
     __pyx_v_key = ((PyObject*)values[0]);
-    __pyx_v_priority = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_priority == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 50, __pyx_L3_error)
+    __pyx_v_priority = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_priority == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 49, __pyx_L3_error)
     __pyx_v_element = values[2];
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("push", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 50, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("push", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 49, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("indexedPQ.PriorityQueue.push", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 50, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 49, __pyx_L1_error)
   __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_2push(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self), __pyx_v_key, __pyx_v_priority, __pyx_v_element);
 
   /* function exit code */
@@ -2334,20 +2335,20 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_2push(struct __pyx_obj_9ind
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("push", 0);
 
-  /* "indexedPQ.pyx":51
+  /* "indexedPQ.pyx":50
  * 
  *     def push(self, str key, int priority, object element):
  *         self.heap.append((priority, key))  # add element to end of heap             # <<<<<<<<<<<<<<
  *         self._sift_up(len(self.heap) - 1)  # sift element up to maintain heap property
- *         self.lookup[key] = element  # add element to lookup dictionary
+ * 
  */
   if (unlikely(__pyx_v_self->heap == Py_None)) {
     PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "append");
-    __PYX_ERR(0, 51, __pyx_L1_error)
+    __PYX_ERR(0, 50, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_GIVEREF(__pyx_t_1);
   PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
@@ -2355,41 +2356,41 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_2push(struct __pyx_obj_9ind
   __Pyx_GIVEREF(__pyx_v_key);
   PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_v_key);
   __pyx_t_1 = 0;
-  __pyx_t_3 = __Pyx_PyList_Append(__pyx_v_self->heap, __pyx_t_2); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyList_Append(__pyx_v_self->heap, __pyx_t_2); if (unlikely(__pyx_t_3 == ((int)-1))) __PYX_ERR(0, 50, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "indexedPQ.pyx":52
+  /* "indexedPQ.pyx":51
  *     def push(self, str key, int priority, object element):
  *         self.heap.append((priority, key))  # add element to end of heap
  *         self._sift_up(len(self.heap) - 1)  # sift element up to maintain heap property             # <<<<<<<<<<<<<<
- *         self.lookup[key] = element  # add element to lookup dictionary
- *         self.key_index[key] = len(self.heap) - 1  # add key to key_index dictionary
+ * 
+ *         #optional key usage is not currently possible
  */
   __pyx_t_2 = __pyx_v_self->heap;
   __Pyx_INCREF(__pyx_t_2);
   if (unlikely(__pyx_t_2 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 52, __pyx_L1_error)
+    __PYX_ERR(0, 51, __pyx_L1_error)
   }
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 52, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 51, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   ((struct __pyx_vtabstruct_9indexedPQ_PriorityQueue *)__pyx_v_self->__pyx_vtab)->_sift_up(__pyx_v_self, (__pyx_t_4 - 1));
 
-  /* "indexedPQ.pyx":53
- *         self.heap.append((priority, key))  # add element to end of heap
- *         self._sift_up(len(self.heap) - 1)  # sift element up to maintain heap property
+  /* "indexedPQ.pyx":54
+ * 
+ *         #optional key usage is not currently possible
  *         self.lookup[key] = element  # add element to lookup dictionary             # <<<<<<<<<<<<<<
  *         self.key_index[key] = len(self.heap) - 1  # add key to key_index dictionary
  * 
  */
   if (unlikely(__pyx_v_self->lookup == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 53, __pyx_L1_error)
+    __PYX_ERR(0, 54, __pyx_L1_error)
   }
-  if (unlikely(PyDict_SetItem(__pyx_v_self->lookup, __pyx_v_key, __pyx_v_element) < 0)) __PYX_ERR(0, 53, __pyx_L1_error)
+  if (unlikely(PyDict_SetItem(__pyx_v_self->lookup, __pyx_v_key, __pyx_v_element) < 0)) __PYX_ERR(0, 54, __pyx_L1_error)
 
-  /* "indexedPQ.pyx":54
- *         self._sift_up(len(self.heap) - 1)  # sift element up to maintain heap property
+  /* "indexedPQ.pyx":55
+ *         #optional key usage is not currently possible
  *         self.lookup[key] = element  # add element to lookup dictionary
  *         self.key_index[key] = len(self.heap) - 1  # add key to key_index dictionary             # <<<<<<<<<<<<<<
  * 
@@ -2399,20 +2400,20 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_2push(struct __pyx_obj_9ind
   __Pyx_INCREF(__pyx_t_2);
   if (unlikely(__pyx_t_2 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 54, __pyx_L1_error)
+    __PYX_ERR(0, 55, __pyx_L1_error)
   }
-  __pyx_t_4 = PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_4 = PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_4 == ((Py_ssize_t)-1))) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyInt_FromSsize_t((__pyx_t_4 - 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+  __pyx_t_2 = PyInt_FromSsize_t((__pyx_t_4 - 1)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   if (unlikely(__pyx_v_self->key_index == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 54, __pyx_L1_error)
+    __PYX_ERR(0, 55, __pyx_L1_error)
   }
-  if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_v_key, __pyx_t_2) < 0)) __PYX_ERR(0, 54, __pyx_L1_error)
+  if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_v_key, __pyx_t_2) < 0)) __PYX_ERR(0, 55, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "indexedPQ.pyx":50
+  /* "indexedPQ.pyx":49
  * 
  * 
  *     def push(self, str key, int priority, object element):             # <<<<<<<<<<<<<<
@@ -2434,7 +2435,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_2push(struct __pyx_obj_9ind
   return __pyx_r;
 }
 
-/* "indexedPQ.pyx":56
+/* "indexedPQ.pyx":57
  *         self.key_index[key] = len(self.heap) - 1  # add key to key_index dictionary
  * 
  *     def pop(self):             # <<<<<<<<<<<<<<
@@ -2469,7 +2470,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("pop", 0);
 
-  /* "indexedPQ.pyx":57
+  /* "indexedPQ.pyx":58
  * 
  *     def pop(self):
  *         key = self.heap[0][1]  # key of element at top of heap             # <<<<<<<<<<<<<<
@@ -2478,17 +2479,17 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
  */
   if (unlikely(__pyx_v_self->heap == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 57, __pyx_L1_error)
+    __PYX_ERR(0, 58, __pyx_L1_error)
   }
-  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt_List(__pyx_v_self->heap, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_key = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "indexedPQ.pyx":58
+  /* "indexedPQ.pyx":59
  *     def pop(self):
  *         key = self.heap[0][1]  # key of element at top of heap
  *         element = self.lookup[key]  # element at top of heap             # <<<<<<<<<<<<<<
@@ -2497,14 +2498,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
  */
   if (unlikely(__pyx_v_self->lookup == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 58, __pyx_L1_error)
+    __PYX_ERR(0, 59, __pyx_L1_error)
   }
-  __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_self->lookup, __pyx_v_key); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 58, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyDict_GetItem(__pyx_v_self->lookup, __pyx_v_key); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_v_element = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "indexedPQ.pyx":59
+  /* "indexedPQ.pyx":60
  *         key = self.heap[0][1]  # key of element at top of heap
  *         element = self.lookup[key]  # element at top of heap
  *         del self.lookup[key]  # remove element from lookup dictionary             # <<<<<<<<<<<<<<
@@ -2513,11 +2514,11 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
  */
   if (unlikely(__pyx_v_self->lookup == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 59, __pyx_L1_error)
+    __PYX_ERR(0, 60, __pyx_L1_error)
   }
-  if (unlikely(PyDict_DelItem(__pyx_v_self->lookup, __pyx_v_key) < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
+  if (unlikely(PyDict_DelItem(__pyx_v_self->lookup, __pyx_v_key) < 0)) __PYX_ERR(0, 60, __pyx_L1_error)
 
-  /* "indexedPQ.pyx":60
+  /* "indexedPQ.pyx":61
  *         element = self.lookup[key]  # element at top of heap
  *         del self.lookup[key]  # remove element from lookup dictionary
  *         del self.key_index[key]  # remove key from key_index dictionary             # <<<<<<<<<<<<<<
@@ -2526,11 +2527,11 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
  */
   if (unlikely(__pyx_v_self->key_index == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-    __PYX_ERR(0, 60, __pyx_L1_error)
+    __PYX_ERR(0, 61, __pyx_L1_error)
   }
-  if (unlikely(PyDict_DelItem(__pyx_v_self->key_index, __pyx_v_key) < 0)) __PYX_ERR(0, 60, __pyx_L1_error)
+  if (unlikely(PyDict_DelItem(__pyx_v_self->key_index, __pyx_v_key) < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
 
-  /* "indexedPQ.pyx":62
+  /* "indexedPQ.pyx":63
  *         del self.key_index[key]  # remove key from key_index dictionary
  * 
  *         if len(self.heap) > 1:             # <<<<<<<<<<<<<<
@@ -2541,14 +2542,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
   __Pyx_INCREF(__pyx_t_2);
   if (unlikely(__pyx_t_2 == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
-    __PYX_ERR(0, 62, __pyx_L1_error)
+    __PYX_ERR(0, 63, __pyx_L1_error)
   }
-  __pyx_t_3 = PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 62, __pyx_L1_error)
+  __pyx_t_3 = PyList_GET_SIZE(__pyx_t_2); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 63, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_4 = ((__pyx_t_3 > 1) != 0);
   if (__pyx_t_4) {
 
-    /* "indexedPQ.pyx":63
+    /* "indexedPQ.pyx":64
  * 
  *         if len(self.heap) > 1:
  *             self.heap[0] = self.heap.pop()  # replace top element with element at bottom of heap             # <<<<<<<<<<<<<<
@@ -2557,18 +2558,18 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
  */
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-      __PYX_ERR(0, 63, __pyx_L1_error)
+      __PYX_ERR(0, 64, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_PyList_Pop(__pyx_v_self->heap); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 63, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyList_Pop(__pyx_v_self->heap); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 63, __pyx_L1_error)
+      __PYX_ERR(0, 64, __pyx_L1_error)
     }
-    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, 0, __pyx_t_2, long, 1, __Pyx_PyInt_From_long, 1, 0, 1) < 0)) __PYX_ERR(0, 63, __pyx_L1_error)
+    if (unlikely(__Pyx_SetItemInt(__pyx_v_self->heap, 0, __pyx_t_2, long, 1, __Pyx_PyInt_From_long, 1, 0, 1) < 0)) __PYX_ERR(0, 64, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-    /* "indexedPQ.pyx":64
+    /* "indexedPQ.pyx":65
  *         if len(self.heap) > 1:
  *             self.heap[0] = self.heap.pop()  # replace top element with element at bottom of heap
  *             self.key_index[self.heap[0][1]] = 0  # update key_index for element that was moved             # <<<<<<<<<<<<<<
@@ -2577,21 +2578,21 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
  */
     if (unlikely(__pyx_v_self->key_index == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 64, __pyx_L1_error)
+      __PYX_ERR(0, 65, __pyx_L1_error)
     }
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 64, __pyx_L1_error)
+      __PYX_ERR(0, 65, __pyx_L1_error)
     }
-    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_self->heap, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 64, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt_List(__pyx_v_self->heap, 0, long, 1, __Pyx_PyInt_From_long, 1, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 65, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 64, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_t_2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 65, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_t_1, __pyx_int_0) < 0)) __PYX_ERR(0, 64, __pyx_L1_error)
+    if (unlikely(PyDict_SetItem(__pyx_v_self->key_index, __pyx_t_1, __pyx_int_0) < 0)) __PYX_ERR(0, 65, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":65
+    /* "indexedPQ.pyx":66
  *             self.heap[0] = self.heap.pop()  # replace top element with element at bottom of heap
  *             self.key_index[self.heap[0][1]] = 0  # update key_index for element that was moved
  *             self._sift_down(0)  # sift element down to maintain heap property             # <<<<<<<<<<<<<<
@@ -2600,7 +2601,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
  */
     ((struct __pyx_vtabstruct_9indexedPQ_PriorityQueue *)__pyx_v_self->__pyx_vtab)->_sift_down(__pyx_v_self, 0);
 
-    /* "indexedPQ.pyx":62
+    /* "indexedPQ.pyx":63
  *         del self.key_index[key]  # remove key from key_index dictionary
  * 
  *         if len(self.heap) > 1:             # <<<<<<<<<<<<<<
@@ -2610,7 +2611,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
     goto __pyx_L3;
   }
 
-  /* "indexedPQ.pyx":67
+  /* "indexedPQ.pyx":68
  *             self._sift_down(0)  # sift element down to maintain heap property
  *         else:
  *             self.heap.pop()             # <<<<<<<<<<<<<<
@@ -2620,15 +2621,15 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
   /*else*/ {
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_Format(PyExc_AttributeError, "'NoneType' object has no attribute '%.30s'", "pop");
-      __PYX_ERR(0, 67, __pyx_L1_error)
+      __PYX_ERR(0, 68, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyList_Pop(__pyx_v_self->heap); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 67, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyList_Pop(__pyx_v_self->heap); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 68, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
   __pyx_L3:;
 
-  /* "indexedPQ.pyx":69
+  /* "indexedPQ.pyx":70
  *             self.heap.pop()
  * 
  *         return element             # <<<<<<<<<<<<<<
@@ -2640,7 +2641,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
   __pyx_r = __pyx_v_element;
   goto __pyx_L0;
 
-  /* "indexedPQ.pyx":56
+  /* "indexedPQ.pyx":57
  *         self.key_index[key] = len(self.heap) - 1  # add key to key_index dictionary
  * 
  *     def pop(self):             # <<<<<<<<<<<<<<
@@ -2662,7 +2663,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_4pop(struct __pyx_obj_9inde
   return __pyx_r;
 }
 
-/* "indexedPQ.pyx":71
+/* "indexedPQ.pyx":72
  *         return element
  * 
  *     def contains(self, str key):             # <<<<<<<<<<<<<<
@@ -2679,7 +2680,7 @@ static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_7contains(PyObject *__pyx_v
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("contains (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 71, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 72, __pyx_L1_error)
   __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_6contains(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self), ((PyObject*)__pyx_v_key));
 
   /* function exit code */
@@ -2701,7 +2702,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_6contains(struct __pyx_obj_
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("contains", 0);
 
-  /* "indexedPQ.pyx":72
+  /* "indexedPQ.pyx":73
  * 
  *     def contains(self, str key):
  *         return key in self.lookup             # <<<<<<<<<<<<<<
@@ -2711,16 +2712,16 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_6contains(struct __pyx_obj_
   __Pyx_XDECREF(__pyx_r);
   if (unlikely(__pyx_v_self->lookup == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
-    __PYX_ERR(0, 72, __pyx_L1_error)
+    __PYX_ERR(0, 73, __pyx_L1_error)
   }
-  __pyx_t_1 = (__Pyx_PyDict_ContainsTF(__pyx_v_key, __pyx_v_self->lookup, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 72, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 72, __pyx_L1_error)
+  __pyx_t_1 = (__Pyx_PyDict_ContainsTF(__pyx_v_key, __pyx_v_self->lookup, Py_EQ)); if (unlikely(__pyx_t_1 < 0)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyBool_FromLong(__pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_r = __pyx_t_2;
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "indexedPQ.pyx":71
+  /* "indexedPQ.pyx":72
  *         return element
  * 
  *     def contains(self, str key):             # <<<<<<<<<<<<<<
@@ -2739,7 +2740,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_6contains(struct __pyx_obj_
   return __pyx_r;
 }
 
-/* "indexedPQ.pyx":74
+/* "indexedPQ.pyx":75
  *         return key in self.lookup
  * 
  *     def get(self, str key):             # <<<<<<<<<<<<<<
@@ -2756,7 +2757,7 @@ static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_9get(PyObject *__pyx_v_self
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 74, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 75, __pyx_L1_error)
   __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_8get(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self), ((PyObject*)__pyx_v_key));
 
   /* function exit code */
@@ -2780,14 +2781,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_8get(struct __pyx_obj_9inde
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get", 0);
 
-  /* "indexedPQ.pyx":75
+  /* "indexedPQ.pyx":76
  * 
  *     def get(self, str key):
  *         if self.contains(key):             # <<<<<<<<<<<<<<
  *             return self.lookup[key]
  *         else:
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_contains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_contains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2801,14 +2802,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_8get(struct __pyx_obj_9inde
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_key) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_key);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 75, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 76, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_4) {
 
-    /* "indexedPQ.pyx":76
+    /* "indexedPQ.pyx":77
  *     def get(self, str key):
  *         if self.contains(key):
  *             return self.lookup[key]             # <<<<<<<<<<<<<<
@@ -2818,15 +2819,15 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_8get(struct __pyx_obj_9inde
     __Pyx_XDECREF(__pyx_r);
     if (unlikely(__pyx_v_self->lookup == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 76, __pyx_L1_error)
+      __PYX_ERR(0, 77, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_self->lookup, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_self->lookup, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 77, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "indexedPQ.pyx":75
+    /* "indexedPQ.pyx":76
  * 
  *     def get(self, str key):
  *         if self.contains(key):             # <<<<<<<<<<<<<<
@@ -2835,7 +2836,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_8get(struct __pyx_obj_9inde
  */
   }
 
-  /* "indexedPQ.pyx":78
+  /* "indexedPQ.pyx":79
  *             return self.lookup[key]
  *         else:
  *             return None             # <<<<<<<<<<<<<<
@@ -2848,7 +2849,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_8get(struct __pyx_obj_9inde
     goto __pyx_L0;
   }
 
-  /* "indexedPQ.pyx":74
+  /* "indexedPQ.pyx":75
  *         return key in self.lookup
  * 
  *     def get(self, str key):             # <<<<<<<<<<<<<<
@@ -2869,7 +2870,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_8get(struct __pyx_obj_9inde
   return __pyx_r;
 }
 
-/* "indexedPQ.pyx":80
+/* "indexedPQ.pyx":81
  *             return None
  * 
  *     def set_priority(self, str key, int priority):             # <<<<<<<<<<<<<<
@@ -2911,11 +2912,11 @@ static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_11set_priority(PyObject *__
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_priority)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("set_priority", 1, 2, 2, 1); __PYX_ERR(0, 80, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("set_priority", 1, 2, 2, 1); __PYX_ERR(0, 81, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "set_priority") < 0)) __PYX_ERR(0, 80, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "set_priority") < 0)) __PYX_ERR(0, 81, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -2924,17 +2925,17 @@ static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_11set_priority(PyObject *__
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_key = ((PyObject*)values[0]);
-    __pyx_v_priority = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_priority == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 80, __pyx_L3_error)
+    __pyx_v_priority = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_priority == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 81, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("set_priority", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 80, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("set_priority", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 81, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("indexedPQ.PriorityQueue.set_priority", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 80, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 81, __pyx_L1_error)
   __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self), __pyx_v_key, __pyx_v_priority);
 
   /* function exit code */
@@ -2962,14 +2963,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("set_priority", 0);
 
-  /* "indexedPQ.pyx":81
+  /* "indexedPQ.pyx":82
  * 
  *     def set_priority(self, str key, int priority):
  *         if self.contains(key):             # <<<<<<<<<<<<<<
  *             index = self.key_index[key]
  *             pair = self.heap[index]
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_contains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_contains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2983,14 +2984,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_key) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_key);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 82, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_4) {
 
-    /* "indexedPQ.pyx":82
+    /* "indexedPQ.pyx":83
  *     def set_priority(self, str key, int priority):
  *         if self.contains(key):
  *             index = self.key_index[key]             # <<<<<<<<<<<<<<
@@ -2999,14 +3000,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx
  */
     if (unlikely(__pyx_v_self->key_index == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 82, __pyx_L1_error)
+      __PYX_ERR(0, 83, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_self->key_index, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 82, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_self->key_index, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_index = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":83
+    /* "indexedPQ.pyx":84
  *         if self.contains(key):
  *             index = self.key_index[key]
  *             pair = self.heap[index]             # <<<<<<<<<<<<<<
@@ -3015,37 +3016,37 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx
  */
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 83, __pyx_L1_error)
+      __PYX_ERR(0, 84, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_self->heap, __pyx_v_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_self->heap, __pyx_v_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_pair = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":84
+    /* "indexedPQ.pyx":85
  *             index = self.key_index[key]
  *             pair = self.heap[index]
  *             old_priority = pair[0]             # <<<<<<<<<<<<<<
  *             self.heap[index] = (priority, pair[1])
  * 
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 84, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_old_priority = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":85
+    /* "indexedPQ.pyx":86
  *             pair = self.heap[index]
  *             old_priority = pair[0]
  *             self.heap[index] = (priority, pair[1])             # <<<<<<<<<<<<<<
  * 
  *             if priority < old_priority:
  */
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 86, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_pair, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 85, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 86, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
@@ -3055,37 +3056,37 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx
     __pyx_t_2 = 0;
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 85, __pyx_L1_error)
+      __PYX_ERR(0, 86, __pyx_L1_error)
     }
-    if (unlikely(PyObject_SetItem(__pyx_v_self->heap, __pyx_v_index, __pyx_t_3) < 0)) __PYX_ERR(0, 85, __pyx_L1_error)
+    if (unlikely(PyObject_SetItem(__pyx_v_self->heap, __pyx_v_index, __pyx_t_3) < 0)) __PYX_ERR(0, 86, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "indexedPQ.pyx":87
+    /* "indexedPQ.pyx":88
  *             self.heap[index] = (priority, pair[1])
  * 
  *             if priority < old_priority:             # <<<<<<<<<<<<<<
  *                 self._sift_up(index)
  *             else:
  */
-    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_priority); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_2 = PyObject_RichCompare(__pyx_t_3, __pyx_v_old_priority, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_2 = PyObject_RichCompare(__pyx_t_3, __pyx_v_old_priority, Py_LT); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 87, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     if (__pyx_t_4) {
 
-      /* "indexedPQ.pyx":88
+      /* "indexedPQ.pyx":89
  * 
  *             if priority < old_priority:
  *                 self._sift_up(index)             # <<<<<<<<<<<<<<
  *             else:
  *                 self._sift_down(index)
  */
-      __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_index); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 88, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_index); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 89, __pyx_L1_error)
       ((struct __pyx_vtabstruct_9indexedPQ_PriorityQueue *)__pyx_v_self->__pyx_vtab)->_sift_up(__pyx_v_self, __pyx_t_5);
 
-      /* "indexedPQ.pyx":87
+      /* "indexedPQ.pyx":88
  *             self.heap[index] = (priority, pair[1])
  * 
  *             if priority < old_priority:             # <<<<<<<<<<<<<<
@@ -3095,7 +3096,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx
       goto __pyx_L4;
     }
 
-    /* "indexedPQ.pyx":90
+    /* "indexedPQ.pyx":91
  *                 self._sift_up(index)
  *             else:
  *                 self._sift_down(index)             # <<<<<<<<<<<<<<
@@ -3103,12 +3104,12 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx
  *     def remove(self, str key):
  */
     /*else*/ {
-      __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_index); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 90, __pyx_L1_error)
+      __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_index); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 91, __pyx_L1_error)
       ((struct __pyx_vtabstruct_9indexedPQ_PriorityQueue *)__pyx_v_self->__pyx_vtab)->_sift_down(__pyx_v_self, __pyx_t_5);
     }
     __pyx_L4:;
 
-    /* "indexedPQ.pyx":81
+    /* "indexedPQ.pyx":82
  * 
  *     def set_priority(self, str key, int priority):
  *         if self.contains(key):             # <<<<<<<<<<<<<<
@@ -3117,7 +3118,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx
  */
   }
 
-  /* "indexedPQ.pyx":80
+  /* "indexedPQ.pyx":81
  *             return None
  * 
  *     def set_priority(self, str key, int priority):             # <<<<<<<<<<<<<<
@@ -3143,7 +3144,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_10set_priority(struct __pyx
   return __pyx_r;
 }
 
-/* "indexedPQ.pyx":92
+/* "indexedPQ.pyx":93
  *                 self._sift_down(index)
  * 
  *     def remove(self, str key):             # <<<<<<<<<<<<<<
@@ -3160,7 +3161,7 @@ static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_13remove(PyObject *__pyx_v_
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("remove (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 92, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 93, __pyx_L1_error)
   __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_12remove(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self), ((PyObject*)__pyx_v_key));
 
   /* function exit code */
@@ -3188,14 +3189,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_12remove(struct __pyx_obj_9
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("remove", 0);
 
-  /* "indexedPQ.pyx":93
+  /* "indexedPQ.pyx":94
  * 
  *     def remove(self, str key):
  *         if self.contains(key):             # <<<<<<<<<<<<<<
  *             index = self.key_index[key]
  *             pair = self.heap[index]
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_contains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_contains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3209,14 +3210,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_12remove(struct __pyx_obj_9
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_key) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_key);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 93, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 93, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 94, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_4) {
 
-    /* "indexedPQ.pyx":94
+    /* "indexedPQ.pyx":95
  *     def remove(self, str key):
  *         if self.contains(key):
  *             index = self.key_index[key]             # <<<<<<<<<<<<<<
@@ -3225,14 +3226,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_12remove(struct __pyx_obj_9
  */
     if (unlikely(__pyx_v_self->key_index == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 94, __pyx_L1_error)
+      __PYX_ERR(0, 95, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_self->key_index, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 94, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_self->key_index, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_index = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":95
+    /* "indexedPQ.pyx":96
  *         if self.contains(key):
  *             index = self.key_index[key]
  *             pair = self.heap[index]             # <<<<<<<<<<<<<<
@@ -3241,33 +3242,33 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_12remove(struct __pyx_obj_9
  */
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 95, __pyx_L1_error)
+      __PYX_ERR(0, 96, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_self->heap, __pyx_v_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_self->heap, __pyx_v_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_pair = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":96
+    /* "indexedPQ.pyx":97
  *             index = self.key_index[key]
  *             pair = self.heap[index]
  *             old_priority = pair[0]             # <<<<<<<<<<<<<<
  *             self.heap[index] = (old_priority, key)
  *             self._sift_down(index)
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_pair, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_old_priority = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":97
+    /* "indexedPQ.pyx":98
  *             pair = self.heap[index]
  *             old_priority = pair[0]
  *             self.heap[index] = (old_priority, key)             # <<<<<<<<<<<<<<
  *             self._sift_down(index)
  *             self.pop()
  */
-    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 97, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_INCREF(__pyx_v_old_priority);
     __Pyx_GIVEREF(__pyx_v_old_priority);
@@ -3277,33 +3278,33 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_12remove(struct __pyx_obj_9
     PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_key);
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 97, __pyx_L1_error)
+      __PYX_ERR(0, 98, __pyx_L1_error)
     }
-    if (unlikely(PyObject_SetItem(__pyx_v_self->heap, __pyx_v_index, __pyx_t_1) < 0)) __PYX_ERR(0, 97, __pyx_L1_error)
+    if (unlikely(PyObject_SetItem(__pyx_v_self->heap, __pyx_v_index, __pyx_t_1) < 0)) __PYX_ERR(0, 98, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":98
+    /* "indexedPQ.pyx":99
  *             old_priority = pair[0]
  *             self.heap[index] = (old_priority, key)
  *             self._sift_down(index)             # <<<<<<<<<<<<<<
  *             self.pop()
  * 
  */
-    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_index); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyInt_As_int(__pyx_v_index); if (unlikely((__pyx_t_5 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 99, __pyx_L1_error)
     ((struct __pyx_vtabstruct_9indexedPQ_PriorityQueue *)__pyx_v_self->__pyx_vtab)->_sift_down(__pyx_v_self, __pyx_t_5);
 
-    /* "indexedPQ.pyx":99
+    /* "indexedPQ.pyx":100
  *             self.heap[index] = (old_priority, key)
  *             self._sift_down(index)
  *             self.pop()             # <<<<<<<<<<<<<<
  * 
  *     def get_priority(self, str key):
  */
-    __pyx_t_1 = __Pyx_PyObject_Pop(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 99, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Pop(((PyObject *)__pyx_v_self)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":93
+    /* "indexedPQ.pyx":94
  * 
  *     def remove(self, str key):
  *         if self.contains(key):             # <<<<<<<<<<<<<<
@@ -3312,7 +3313,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_12remove(struct __pyx_obj_9
  */
   }
 
-  /* "indexedPQ.pyx":92
+  /* "indexedPQ.pyx":93
  *                 self._sift_down(index)
  * 
  *     def remove(self, str key):             # <<<<<<<<<<<<<<
@@ -3338,7 +3339,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_12remove(struct __pyx_obj_9
   return __pyx_r;
 }
 
-/* "indexedPQ.pyx":101
+/* "indexedPQ.pyx":102
  *             self.pop()
  * 
  *     def get_priority(self, str key):             # <<<<<<<<<<<<<<
@@ -3355,7 +3356,7 @@ static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_15get_priority(PyObject *__
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_priority (wrapper)", 0);
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 101, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_key), (&PyUnicode_Type), 1, "key", 1))) __PYX_ERR(0, 102, __pyx_L1_error)
   __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self), ((PyObject*)__pyx_v_key));
 
   /* function exit code */
@@ -3381,14 +3382,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("get_priority", 0);
 
-  /* "indexedPQ.pyx":102
+  /* "indexedPQ.pyx":103
  * 
  *     def get_priority(self, str key):
  *         if self.contains(key):             # <<<<<<<<<<<<<<
  *             index = self.key_index[key]
  *             priority = self.heap[index][0]
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_contains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_contains); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_3 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -3402,14 +3403,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx
   }
   __pyx_t_1 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_3, __pyx_v_key) : __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_key);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 102, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 102, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 103, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_4) {
 
-    /* "indexedPQ.pyx":103
+    /* "indexedPQ.pyx":104
  *     def get_priority(self, str key):
  *         if self.contains(key):
  *             index = self.key_index[key]             # <<<<<<<<<<<<<<
@@ -3418,14 +3419,14 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx
  */
     if (unlikely(__pyx_v_self->key_index == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 103, __pyx_L1_error)
+      __PYX_ERR(0, 104, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_self->key_index, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 103, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyDict_GetItem(__pyx_v_self->key_index, __pyx_v_key); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_v_index = __pyx_t_1;
     __pyx_t_1 = 0;
 
-    /* "indexedPQ.pyx":104
+    /* "indexedPQ.pyx":105
  *         if self.contains(key):
  *             index = self.key_index[key]
  *             priority = self.heap[index][0]             # <<<<<<<<<<<<<<
@@ -3434,17 +3435,17 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx
  */
     if (unlikely(__pyx_v_self->heap == Py_None)) {
       PyErr_SetString(PyExc_TypeError, "'NoneType' object is not subscriptable");
-      __PYX_ERR(0, 104, __pyx_L1_error)
+      __PYX_ERR(0, 105, __pyx_L1_error)
     }
-    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_self->heap, __pyx_v_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetItem(__pyx_v_self->heap, __pyx_v_index); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 104, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_t_1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_priority = __pyx_t_2;
     __pyx_t_2 = 0;
 
-    /* "indexedPQ.pyx":105
+    /* "indexedPQ.pyx":106
  *             index = self.key_index[key]
  *             priority = self.heap[index][0]
  *             return priority             # <<<<<<<<<<<<<<
@@ -3456,7 +3457,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx
     __pyx_r = __pyx_v_priority;
     goto __pyx_L0;
 
-    /* "indexedPQ.pyx":102
+    /* "indexedPQ.pyx":103
  * 
  *     def get_priority(self, str key):
  *         if self.contains(key):             # <<<<<<<<<<<<<<
@@ -3465,10 +3466,12 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx
  */
   }
 
-  /* "indexedPQ.pyx":107
+  /* "indexedPQ.pyx":108
  *             return priority
  *         else:
  *             return None             # <<<<<<<<<<<<<<
+ * 
+ *     def is_empty(self):
  */
   /*else*/ {
     __Pyx_XDECREF(__pyx_r);
@@ -3476,7 +3479,7 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx
     goto __pyx_L0;
   }
 
-  /* "indexedPQ.pyx":101
+  /* "indexedPQ.pyx":102
  *             self.pop()
  * 
  *     def get_priority(self, str key):             # <<<<<<<<<<<<<<
@@ -3499,6 +3502,74 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx
   return __pyx_r;
 }
 
+/* "indexedPQ.pyx":110
+ *             return None
+ * 
+ *     def is_empty(self):             # <<<<<<<<<<<<<<
+ *         return len(self.heap) == 0
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_17is_empty(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_17is_empty(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("is_empty (wrapper)", 0);
+  __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_16is_empty(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_16is_empty(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  Py_ssize_t __pyx_t_2;
+  int __pyx_lineno = 0;
+  const char *__pyx_filename = NULL;
+  int __pyx_clineno = 0;
+  __Pyx_RefNannySetupContext("is_empty", 0);
+
+  /* "indexedPQ.pyx":111
+ * 
+ *     def is_empty(self):
+ *         return len(self.heap) == 0             # <<<<<<<<<<<<<<
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = __pyx_v_self->heap;
+  __Pyx_INCREF(__pyx_t_1);
+  if (unlikely(__pyx_t_1 == Py_None)) {
+    PyErr_SetString(PyExc_TypeError, "object of type 'NoneType' has no len()");
+    __PYX_ERR(0, 111, __pyx_L1_error)
+  }
+  __pyx_t_2 = PyList_GET_SIZE(__pyx_t_1); if (unlikely(__pyx_t_2 == ((Py_ssize_t)-1))) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyBool_FromLong((__pyx_t_2 == 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* "indexedPQ.pyx":110
+ *             return None
+ * 
+ *     def is_empty(self):             # <<<<<<<<<<<<<<
+ *         return len(self.heap) == 0
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("indexedPQ.PriorityQueue.is_empty", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
 /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     cdef tuple state
@@ -3506,19 +3577,19 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_14get_priority(struct __pyx
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_17__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_17__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_19__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_19__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_16__reduce_cython__(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self));
+  __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_18__reduce_cython__(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_16__reduce_cython__(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self) {
+static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_18__reduce_cython__(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self) {
   PyObject *__pyx_v_state = 0;
   PyObject *__pyx_v__dict = 0;
   int __pyx_v_use_setstate;
@@ -3765,19 +3836,19 @@ static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_16__reduce_cython__(struct 
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_19__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_19__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_21__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_9indexedPQ_13PriorityQueue_21__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_18__setstate_cython__(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_9indexedPQ_13PriorityQueue_20__setstate_cython__(((struct __pyx_obj_9indexedPQ_PriorityQueue *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_18__setstate_cython__(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_9indexedPQ_13PriorityQueue_20__setstate_cython__(struct __pyx_obj_9indexedPQ_PriorityQueue *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4312,8 +4383,9 @@ static PyMethodDef __pyx_methods_9indexedPQ_PriorityQueue[] = {
   {"set_priority", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_9indexedPQ_13PriorityQueue_11set_priority, METH_VARARGS|METH_KEYWORDS, 0},
   {"remove", (PyCFunction)__pyx_pw_9indexedPQ_13PriorityQueue_13remove, METH_O, 0},
   {"get_priority", (PyCFunction)__pyx_pw_9indexedPQ_13PriorityQueue_15get_priority, METH_O, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_9indexedPQ_13PriorityQueue_17__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_9indexedPQ_13PriorityQueue_19__setstate_cython__, METH_O, 0},
+  {"is_empty", (PyCFunction)__pyx_pw_9indexedPQ_13PriorityQueue_17is_empty, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_9indexedPQ_13PriorityQueue_19__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_9indexedPQ_13PriorityQueue_21__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -4812,8 +4884,8 @@ if (!__Pyx_RefNanny) {
 
   /* "indexedPQ.pyx":1
  * # generated with chatgpt and edited by Ibrahim in collaboration             # <<<<<<<<<<<<<<
- * # a little more
  * 
+ * # feature request - ability for things to be unindexed, perhaps an input of None string or something
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);

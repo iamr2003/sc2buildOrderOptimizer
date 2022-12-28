@@ -1,5 +1,6 @@
 # generated with chatgpt and edited by Ibrahim in collaboration
 
+# feature request - ability for things to be unindexed, perhaps an input of None string or something
 cdef class PriorityQueue:
     cdef list heap  # list of (priority, key) tuples
     cdef dict lookup  # mapping from key to element
@@ -48,6 +49,8 @@ cdef class PriorityQueue:
     def push(self, str key, int priority, object element):
         self.heap.append((priority, key))  # add element to end of heap
         self._sift_up(len(self.heap) - 1)  # sift element up to maintain heap property
+
+        #optional key usage is not currently possible
         self.lookup[key] = element  # add element to lookup dictionary
         self.key_index[key] = len(self.heap) - 1  # add key to key_index dictionary
 
@@ -103,3 +106,6 @@ cdef class PriorityQueue:
             return priority
         else:
             return None 
+
+    def is_empty(self):
+        return len(self.heap) == 0

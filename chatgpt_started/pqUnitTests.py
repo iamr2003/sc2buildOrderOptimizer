@@ -50,12 +50,20 @@ class TestPriorityQueue(unittest.TestCase):
         self.assertEqual(self.pq.get_priority("b"), 2)
         self.assertIsNone(self.pq.get_priority("c"))
 
+    def test_is_empty(self):
+        self.assertTrue(self.pq.is_empty())
+        self.pq.push("a", 1, "element A")
+        self.assertFalse(self.pq.is_empty())
+        self.pq.pop()
+        self.assertTrue(self.pq.is_empty())
+
     def test_mass_insertion(self):
         n = 1000000 #3.868s up to here on my machine, should be fast enough
         for i in range(n):
             self.pq.push(str(i), i, i)
         for i in range(n):
             self.assertEqual(self.pq.pop(), i)
+        self.assertTrue(self.pq.is_empty())
 
     def test_mass_lookup(self):
         n = 1000000 #with all 5.418s
