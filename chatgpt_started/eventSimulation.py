@@ -5,8 +5,10 @@ import heapq
 from indexedPQ import PriorityQueue as pq
 from dataclasses import dataclass
 
-# Define a class for each event that will be added to the queue
-
+# TODO
+# production requirements
+    # easily for now, need to figure out better scheme to encode constraints and checks
+# commands which change on events indexed(basically event listeners)
 
 # edge cases
 # workers being consumed in structure making
@@ -65,6 +67,7 @@ buildProduction = {
 
 structures = {
     "Pylon": {"minerals": 100, "gas": 0, "build_time": 18},
+    "Nexus": {"minerals": 400, "gas": 0, "build_time": 71},
     "Gateway": {"minerals": 150, "gas": 0, "build_time": 65},
     "Robotics Facility": {"minerals": 200, "gas": 100, "build_time": 65},
     "Stargate": {"minerals": 150, "gas": 150,  "build_time": 60},
@@ -84,7 +87,9 @@ def addUnit(state, unitName):
 
 
 def addStructure(state, structureName):
-    state["structures"][structureName] += 1
+    if not structureName in state["structures"]:
+        state["structures"][structureName] = Struct()
+    state["structures"][structureName].count += 1
     return (state, [])
 
 
@@ -121,38 +126,71 @@ def printState(state):
 
 
 # strategies
-def buildProbes(state):
-    # need to figure out where to encode constraints
-    # encode activity constraints
 
+# this is currently a manual heuristic, which might have benefits, but I'd like supervised learning to be able to figure out better ones
+def buildDecisions(state):
+    # need to figure out best way to encode constraints
+    
+    # this might have issues with duplication- I basically want at most once semantics for this event
+
+    # supply cap, go right to limit for now
     if state["supply_used"] >= state["supply"]:
-        return (state, [])
+        # check if we can build a pylon
+        if state["minerals"] >= 100:
+            return (state, [
+                Event(state["time"], "Build Pylon",
+                      lambda state: buildStructure(state, "Pylon")),
+                Event(state["time"] + 18, "Build Pylon Decision", buildDecisions)
+            ])
+        else:
+            # need event listener for income
+            timeTillNextPylon = (100-state["minerals"])/miningRate(state["units"]["Probe"])
+            return (state, [Event(state["time"] + timeTillNextPylon, "Build Pylon Potential", buildDecisions)])
+    
 
+    # production cap
+    if state["structures"]["Nexus"].active == state["structures"]["Nexus"].count:
+        # check if we can build a nexus
+        if state["minerals"] >= 400:
+            return (state, [
+                Event(state["time"], "Build Nexus",
+                      lambda state: buildStructure(state, "Nexus")),
+                Event(state["time"] + 65, "Build Nexus Decision", buildDecisions)
+            ])
+        else:
+            # need event listener for income and availability
+            timeTillNextNexus = (400-state["minerals"])/miningRate(state["units"]["Probe"])
+            return (state, [Event(state["time"] + timeTillNextNexus, "Build Nexus Potential", buildDecisions)])
+
+    # build probes if we have the minerals
     if state["minerals"] >= 50:
         return (state, [
             Event(state["time"], "Build Probe",
                   lambda state: buildUnit(state, "Probe")),
-            Event(state["time"] + 12, "Build Probe Decision", buildProbes)
+            Event(state["time"] + 12, "Build Probe Potential", buildDecisions)
         ])
-    # else:
-    #     # project need to check again(complicated with changing worker counts)
-    #     # timeTillNextProbe = (
-    #     #     50 - state["minerals"])/miningRate(state["units"]["Probe"])
-    #     return (state, [Event(state["time"] + timeTillNextProbe, "Build Probes", buildProbes)])
+    else:
+        # need event listener for income
+        timeTillNextProbe = (50-state["minerals"])/miningRate(state["units"]["Probe"])
+        return (state, [Event(state["time"] + timeTillNextProbe, "Build Probe Decision", buildDecisions)])
+
 
 # need to figure out how to tie statuses to different things
 #best method I think is to have each structure have an "in progress aspect"
 
 # Initialize the priority queue with the initial event
 event_queue = pq()
-event_queue.push("Start",0,Event(0, "Start game", buildProbes)) #might simplify a bit, no need to store index in event as well
+event_queue.push("Start",0,Event(0, "Start game", buildDecisions)) #might simplify a bit, no need to store index in event as well
+
+endTime = 170
+event_queue.push("End",endTime,Event(endTime, "End game", lambda state: (state, [])))
 
 # will need to create an "potentially affected group for decisions"
 # might be nice for the ability to have things unindexed in DS, maybe a special tag
 
 
 # Loop until the queue is empty
-while not event_queue.is_empty():
+while not event_queue.is_empty() and state["time"] <= endTime:
     # Get the next event from the queue
     current_event = event_queue.pop()
 
@@ -172,7 +210,7 @@ while not event_queue.is_empty():
 
     i = 0
     for event in newEvents:
-        print(f"pushed time {event.time} event {event.name}")
+        # print(f"pushed time {event.time} event {event.name}")
 
         # make sure fully uniqname, and some descriptions
         uniqname = f"Made:t{current_event.time},{event.name},For:t{event.time}i:{i}"
@@ -183,6 +221,8 @@ while not event_queue.is_empty():
     # special cases
     if current_event.name == "Pylon finished":
         state["supply"] += 8
+    if current_event.name == "Nexus finished":
+        state["supply"] += 15
 
     # decision making
     # ignoring activity requirements so far
