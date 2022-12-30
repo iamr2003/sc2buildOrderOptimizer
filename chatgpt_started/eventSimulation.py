@@ -185,6 +185,8 @@ event_queue.push("Start",0,Event(0, "Start game", buildDecisions)) #might simpli
 endTime = 170
 event_queue.push("End",endTime,Event(endTime, "End game", lambda state: (state, [])))
 
+OnMineralRateChange = {}
+
 # will need to create an "potentially affected group for decisions"
 # might be nice for the ability to have things unindexed in DS, maybe a special tag
 
@@ -218,11 +220,30 @@ while not event_queue.is_empty() and state["time"] <= endTime:
         i += 1
 
 
-    # special cases
+    # SPECIAL CASES
+
+    # callbacks/eventListeners
+    if current_event.name == "Add Probe":
+        for name in OnMineralRateChange:
+            e = event_queue.get(name)
+            event_queue.remove(name)
+            # run events now
+            state, newEvents = e.action(state)
+            # repackage in function?
+            for event in newEvents:
+                uniqname = f"Made:t{current_event.time},{event.name},For:t{event.time}i:{i}"
+                event_queue.push(uniqname, event.time, event)
+                i += 1
+
+    # supply
     if current_event.name == "Pylon finished":
         state["supply"] += 8
     if current_event.name == "Nexus finished":
         state["supply"] += 15
+
+
+
+
 
     # decision making
     # ignoring activity requirements so far
